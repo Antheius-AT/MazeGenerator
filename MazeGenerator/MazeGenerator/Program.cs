@@ -6,7 +6,8 @@ namespace MazeGenerator
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            var generator = new DefaultMazeGenerator();
+            generator.Generate(4, 4);
         }
     }
 }
