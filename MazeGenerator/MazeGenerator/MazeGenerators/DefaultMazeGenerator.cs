@@ -33,17 +33,53 @@ namespace MazeGenerator
             do
             {
                 this.GenerateMazePath();
-            } 
-            while (mazeCells.First(cell => cell.IsInMaze) == null);
+            }
+            while (mazeCells.FirstOrDefault(cell => !cell.IsInMaze) != null);
 
-
-            throw new NotImplementedException();
+            var walls = this.GenerateMazeWalls();
+            return new Maze(height, width, mazeCells);
         }
 
+        /// <summary>
+        /// This method generates a single random maze path.
+        /// </summary>
         private void GenerateMazePath()
         {
             int randomStartIndex;
             int currentIndex;
+            int walkEndIndex;
+
+            randomStartIndex = this.GenerateRandomWalkStart();
+            currentIndex = randomStartIndex;
+            walkEndIndex = this.PerformRandomWalk(currentIndex);
+            this.AddPathToMaze(currentIndex, walkEndIndex);
+        }
+
+        /// <summary>
+        /// Starts at a specified index and walks a path, adding cells on the path to the maze.
+        /// </summary>
+        /// <param name="currentIndex">The current index of the cell being walked.</param>
+        /// <param name="walkEndIndex">The index at which to terminate the walk.</param>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// Is thrown if either of the indexes are negative or greater than the cells amount.
+        /// </exception>
+        private void AddPathToMaze(int currentIndex, int walkEndIndex)
+        {
+            do
+            {
+                this.mazeCells[currentIndex].IsInMaze = true;
+                currentIndex = this.UpdateIndex(this.mazeCells[currentIndex].WalkDirection, currentIndex);
+            }
+            while (currentIndex != walkEndIndex);
+        }
+
+        /// <summary>
+        /// Generates a random starting index for the random walk.
+        /// </summary>
+        /// <returns>The random starting index for the random walk.</returns>
+        private int GenerateRandomWalkStart()
+        {
+            int randomStartIndex;
 
             do
             {
@@ -51,7 +87,20 @@ namespace MazeGenerator
             }
             while (this.mazeCells[randomStartIndex].IsInMaze);
 
-            currentIndex = randomStartIndex;
+            return randomStartIndex;
+        }
+
+        /// <summary>
+        /// Performs the random walk to find a path in the maze.
+        /// </summary>
+        /// <param name="startingIndex">The index to start the random walk from.</param>
+        /// <returns>The index of the cell that terminated the random walk.</returns>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// Thrown if start index is negative or already contained in maze.
+        /// </exception>
+        private int PerformRandomWalk(int startingIndex)
+        {
+            var currentIndex = startingIndex;
 
             do
             {
@@ -62,10 +111,10 @@ namespace MazeGenerator
                     this.mazeCells[currentIndex].WalkDirection = direction;
                     currentIndex = this.UpdateIndex(direction, currentIndex);
                 }
-            } 
+            }
             while (!this.mazeCells[currentIndex].IsInMaze);
 
-            throw new NotImplementedException();
+            return currentIndex;
         }
 
         private Direction GetRandomWalkDirection()
@@ -138,6 +187,16 @@ namespace MazeGenerator
                 default:
                     throw new ArgumentException(nameof(direction), "Invalid direction");
             }
+        }
+
+        private MazeWall[] GenerateMazeWalls()
+        {
+            for (int i = 0; i < this.mazeCells.Length; i++)
+            {
+                throw new NotImplementedException();
+            }
+
+            throw new NotImplementedException();
         }
     }
 }

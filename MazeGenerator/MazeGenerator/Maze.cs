@@ -7,7 +7,7 @@ namespace MazeGenerator
 {
     public class Maze
     {
-        public Maze(int height, int width, MazeCell[,] cells)
+        public Maze(int height, int width, MazeCell[] cells)
         {
             if (height < 0 || width < 0)
                 throw new ArgumentException($"Height and width must not be negative. Height was: {height}. Width was: {width}");
@@ -29,7 +29,7 @@ namespace MazeGenerator
             private set;
         }
 
-        public MazeCell[,] Cells
+        public MazeCell[] Cells
         {
             get;
             set;

@@ -23,5 +23,10 @@ namespace MazeGenerator
             get;
             set;
         }
+
+        public override string ToString()
+        {
+            return $"Is in maze:{this.IsInMaze}, direction to next cell:{this.WalkDirection}";
+        }
     }
 }
