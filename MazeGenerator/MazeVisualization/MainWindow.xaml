@@ -9,13 +9,16 @@
     <Window.DataContext>
         <local:MainWindowViewModel/>
     </Window.DataContext>
+    <Window.Resources>
+        <local:CoordinateConverter x:Key="coordinateConverter"/>
+    </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
 
-        <Canvas Height="380" Width="500" Background="Red">
+        <Canvas Height="380" Width="500">
             <ItemsControl ItemsSource="{Binding MazeCells}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
@@ -24,13 +27,13 @@
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemContainerStyle>
                     <Style TargetType="ContentPresenter">
-                        <Setter Property="Canvas.Left" Value="{Binding Left}"/>
-                        <Setter Property="Canvas.Top" Value="{Binding Top}"/>
+                        <Setter Property="Canvas.Left" Value="{Binding Left, Converter={StaticResource coordinateConverter}}"/>
+                        <Setter Property="Canvas.Top" Value="{Binding Top, Converter={StaticResource coordinateConverter}}"/>
                     </Style>
                 </ItemsControl.ItemContainerStyle>
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <Rectangle Width="10" Height="10" Fill="White"/>
+                        <local:DrawableMazeCell Width="5" Height="5"/>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>

@@ -1,0 +1,20 @@
+﻿<UserControl x:Class="MazeVisualization.DrawableMazeCell"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:MazeVisualization"
+             mc:Ignorable="d" 
+             d:DesignHeight="5" d:DesignWidth="5">
+    <UserControl.DataContext>
+        <local:MazeCellViewModel/>
+    </UserControl.DataContext>
+    <UserControl.Resources>
+        <local:DrawableCellConverter x:Key="cellConverter"/>
+        <local:ElementSizeConverter x:Key="sizeConverter"/>
+    </UserControl.Resources>
+    <Grid>
+        <!--<Rectangle Height="5" Width="5" Fill="Red"/>-->
+        <Rectangle Margin="{Binding Cell.WalkDirection, Converter={StaticResource cellConverter}}" Height="4" Width="4" Fill="Green"/>
+    </Grid>
+</UserControl>

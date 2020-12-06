@@ -17,13 +17,20 @@ namespace MazeVisualization
         {
             this.generator = new DefaultMazeGenerator();
             this.MazeCells = new ObservableCollection<MazeCellViewModel>();
+            this.MazeViewModel = new MazeCellViewModel();
         }
 
         public ObservableCollection<MazeCellViewModel> MazeCells
         {
             get;
             set;
-        } 
+        }
+        
+        public MazeCellViewModel MazeViewModel
+        {
+            get;
+            set;
+        }
 
         public ICommand GenerateMazeCommand
         {
@@ -37,7 +44,7 @@ namespace MazeVisualization
                     {
                         var row = i / maze.Height;
                         var column = i % maze.Width;
-                        this.MazeCells.Add(new MazeCellViewModel(maze.Cells[i], column + 10 * column, row + 10 * row));
+                        this.MazeCells.Add(new MazeCellViewModel(maze.Cells[i], column, row));
 
                     }
 
