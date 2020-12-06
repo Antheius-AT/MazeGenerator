@@ -36,7 +36,6 @@ namespace MazeGenerator
             }
             while (mazeCells.FirstOrDefault(cell => !cell.IsInMaze) != null);
 
-            var walls = this.GenerateMazeWalls();
             return new Maze(height, width, mazeCells);
         }
 
@@ -187,16 +186,6 @@ namespace MazeGenerator
                 default:
                     throw new ArgumentException(nameof(direction), "Invalid direction");
             }
-        }
-
-        private MazeWall[] GenerateMazeWalls()
-        {
-            for (int i = 0; i < this.mazeCells.Length; i++)
-            {
-                throw new NotImplementedException();
-            }
-
-            throw new NotImplementedException();
         }
     }
 }
