@@ -11,6 +11,8 @@ namespace MazeVisualization
 {
     public class MainWindowViewModel : INotifyPropertyChanged
     {
+        private int mazeWidth;
+        private int mazeHeight;
         private IMazeGenerator generator;
 
         public MainWindowViewModel()
@@ -18,6 +20,8 @@ namespace MazeVisualization
             this.generator = new DefaultMazeGenerator();
             this.MazeCells = new ObservableCollection<MazeCellViewModel>();
             this.MazeViewModel = new MazeCellViewModel();
+            this.GeneratedMazeHeight = 5;
+            this.GeneratedMazeWidth = 5;
         }
 
         public ObservableCollection<MazeCellViewModel> MazeCells
@@ -32,13 +36,45 @@ namespace MazeVisualization
             set;
         }
 
+        public int GeneratedMazeWidth
+        {
+            get
+            {
+                return this.mazeWidth;
+            }
+
+            set
+            {
+                if (mazeWidth > 100)
+                    throw new ArgumentOutOfRangeException(nameof(value), "Maze width must not exceed 100");
+
+                this.mazeWidth = value;
+            }
+        }
+
+        public int GeneratedMazeHeight
+        {
+            get
+            {
+                return this.mazeHeight;
+            }
+
+            set
+            {
+                if (mazeHeight > 100)
+                    throw new ArgumentOutOfRangeException(nameof(value), "Maze height must not exceed 100");
+
+                this.mazeHeight = value;
+            }
+        }
+
         public ICommand GenerateMazeCommand
         {
             get
             {
                 return new RelayCommand(p =>
                 {
-                    var maze = this.generator.Generate(100, 100);
+                    var maze = this.generator.Generate(this.GeneratedMazeWidth, this.GeneratedMazeHeight);
 
                     for (int i = 0; i < maze.Cells.Length; i++)
                     {

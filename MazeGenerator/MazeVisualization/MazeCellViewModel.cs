@@ -17,8 +17,8 @@ namespace MazeVisualization
             this.Cell = cell;
             this.Left = left;
             this.Top = top;
-            this.Height = 4;
-            this.Width = 4;
+            this.Height = 7;
+            this.Width = 7;
         }
 
         public MazeCell Cell
