@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 
 namespace MazeGenerator
 {
@@ -7,23 +6,40 @@ namespace MazeGenerator
     {
         static void Main(string[] args)
         {
-            int width = 40;
-            int height = 40;
+            // Remember default values.
+            var initialHeight = Console.WindowHeight;
+            var initialWidth = Console.WindowWidth;
+            var initialBufferWidth = Console.BufferWidth;
+            var initialBufferHeight = Console.BufferHeight;
 
+            // Parameterize Console.
+            Console.SetWindowSize(Console.LargestWindowWidth - 2, Console.LargestWindowHeight - 2);
+            Console.SetBufferSize(Console.WindowWidth, Console.WindowHeight);
+
+            // Set maze parameters.
+            int width = 60;
+            int height = 20;
+
+            var renderer = new Renderer();
             var generator = new DefaultMazeGenerator();
             var maze = generator.Generate(width, height);
 
-            //for (int i = 0; i < height; i++)
-            //{
-            //    for (int j = 0; j < width; j++)
-            //    {
-            //        Console.Write(maze.Cells[j + i * width].WalkDirection.ToString().First());
-            //    }
+            Console.SetCursorPosition(5, 5);
+            var initialLeft = 5;
 
-            //    Console.WriteLine();
-            //}
+            // Render each cell. If index equals a multiple of width, continue in next row.
+            for (int i = 0; i < maze.Cells.Length; i++)
+            {
+                if (i != 0 && i % maze.Width == 0)
+                    Console.SetCursorPosition(initialLeft, Console.CursorTop + 2);
 
-            Console.ReadLine();
+                renderer.Render(maze.Cells[i]);
+            }
+
+            // Wait for input and reset values.
+            Console.ReadKey();
+            Console.SetWindowSize(initialWidth, initialHeight);
+            Console.SetBufferSize(initialBufferWidth, initialBufferHeight);
         }
     }
 }

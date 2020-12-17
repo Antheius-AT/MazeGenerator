@@ -1,9 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
+﻿//-----------------------------------------------------------------------
+// <copyright file="MazeCell.cs" company="FHWN">
+//     Copyright (c) FHWN. All rights reserved.
+// </copyright>
+// <author>Gregor Faiman</author>
+//-----------------------------------------------------------------------
 namespace MazeGenerator
 {
+    /// <summary>
+    /// Represent a single maze cell.
+    /// </summary>
     public class MazeCell
     {
         public MazeCell(Direction walkDirection = Direction.None)

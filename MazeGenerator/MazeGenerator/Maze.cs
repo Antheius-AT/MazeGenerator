@@ -1,10 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading;
-
+﻿//-----------------------------------------------------------------------
+// <copyright file="Maze.cs" company="FHWN">
+//     Copyright (c) FHWN. All rights reserved.
+// </copyright>
+// <author>Gregor Faiman</author>
+//-----------------------------------------------------------------------
 namespace MazeGenerator
 {
+    using System;
+
+    /// <summary>
+    /// Represents a maze consisting of individual cells that each have a walk direction.
+    /// </summary>
     public class Maze
     {
         public Maze(int height, int width, MazeCell[] cells)

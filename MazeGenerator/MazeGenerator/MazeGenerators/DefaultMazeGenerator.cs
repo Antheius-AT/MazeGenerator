@@ -1,10 +1,18 @@
-﻿using System;
-using System.Linq;
-using System.Collections.Generic;
-using System.Text;
-
+﻿//-----------------------------------------------------------------------
+// <copyright file="DefaultMazeGenerator.cs" company="FHWN">
+//     Copyright (c) FHWN. All rights reserved.
+// </copyright>
+// <author>Gregor Faiman</author>
+//-----------------------------------------------------------------------
 namespace MazeGenerator
 {
+    using System;
+    using System.Linq;
+
+    /// <summary>
+    /// The default maze generator, which simply generates the complete maze via a random walk, but does not
+    /// update the caller upon individual steps.
+    /// </summary>
     public class DefaultMazeGenerator : IMazeGenerator
     {
         private Random random;
@@ -17,19 +25,28 @@ namespace MazeGenerator
             this.random = new Random();
         }
 
+        /// <summary>
+        /// Generates a maze with the specified height and width.
+        /// </summary>
+        /// <param name="width">the maze width.</param>
+        /// <param name="height">The maze height.</param>
+        /// <returns>The generated maze.</returns>
         public Maze Generate(int width, int height)
         {
             this.mazeCells = new MazeCell[width * height];
             this.mazeWidth = width;
             this.mazeHeight = height;
 
+            // Initializes the maze cells, to avoid Nullreference exceptions.
             for (int i = 0; i < mazeCells.Length; i++)
             {
                 mazeCells[i] = new MazeCell();
             }
 
-            mazeCells[this.random.Next(0, width * height)].IsInMaze = true;
+            // Generate starting point for random walk. Mark any point in cells as "in maze".
+            mazeCells[this.random.Next(0, mazeCells.Length)].IsInMaze = true;
 
+            // Keeps generating maze paths until no cell is left marked as "not in maze".
             do
             {
                 this.GenerateMazePath();
@@ -64,6 +81,8 @@ namespace MazeGenerator
         /// </exception>
         private void AddPathToMaze(int currentIndex, int walkEndIndex)
         {
+            // Walks the randomly generated path starting from the current index, and adds 
+            // each of the cells on the path to the maze.
             do
             {
                 this.mazeCells[currentIndex].IsInMaze = true;
@@ -80,6 +99,7 @@ namespace MazeGenerator
         {
             int randomStartIndex;
 
+            // Generate random index, and keep trying until finding a cell which is not yet in the maze.
             do
             {
                 randomStartIndex = this.random.Next(0, this.mazeCells.Length);
@@ -101,6 +121,9 @@ namespace MazeGenerator
         {
             var currentIndex = startingIndex;
 
+            // This is the actual random walk logic.
+            // Generates a random direction for each cell, and walks into that direction if the direction is valid.
+            // This goes on, until current index represent a cell, that is already in the maze.
             do
             {
                 var direction = this.GetRandomWalkDirection();
@@ -116,6 +139,10 @@ namespace MazeGenerator
             return currentIndex;
         }
 
+        /// <summary>
+        /// Gets a random walk direction.
+        /// </summary>
+        /// <returns>The random walk direction.</returns>
         private Direction GetRandomWalkDirection()
         {
             var randomNumber = this.random.Next(1, 101);
@@ -130,6 +157,12 @@ namespace MazeGenerator
                 return Direction.Left;
         }
 
+        /// <summary>
+        /// Determines whether the walk can walk in a specified direction.
+        /// </summary>
+        /// <param name="direction">The specified direction.</param>
+        /// <param name="currentIndex">The current index.</param>
+        /// <returns>Whether the walk can walk in the current direction.</returns>
         private bool CanWalkDirection(Direction direction, int currentIndex)
         {
             switch (direction)
@@ -147,30 +180,56 @@ namespace MazeGenerator
             }
         }
 
+        /// <summary>
+        /// Checks whether the walk can walk right from the current index.
+        /// </summary>
+        /// <param name="currentIndex">The current index.</param>
+        /// <returns>Whether the walk can walk right.</returns>
         private bool CanWalkRight(int currentIndex)
         {
             // true if anywhere but in the right-most column.
             return (currentIndex + 1) % this.mazeWidth > 0;
         }
 
+        /// <summary>
+        /// Checks whether the walk can walk left from the current index.
+        /// </summary>
+        /// <param name="currentIndex">The current index.</param>
+        /// <returns>Whether the walk can walk left.</returns>
         private bool CanWalkLeft(int currentIndex)
         {
             // true if anywhere but in the left most column.
             return currentIndex % this.mazeWidth > 0;
         }
 
+        /// <summary>
+        /// Checks whether the walk can walk down from the current index.
+        /// </summary>
+        /// <param name="currentIndex">The current index.</param>
+        /// <returns>Whether the walk can walk down.</returns>
         private bool CanWalkDown(int currentIndex)
         {
             // Similar to check if can walk right. True if anyhwere but in the lower most row.
             return currentIndex < (this.mazeHeight * this.mazeWidth) - this.mazeWidth;
         }
 
+        /// <summary>
+        /// Checks whether the walk can walk up from the current index.
+        /// </summary>
+        /// <param name="currentIndex">The current index.</param>
+        /// <returns>Whether the walk can walk up.</returns>
         private bool CanWalkUp(int currentIndex)
         {
             // True if anywhere but in the upper most row.
             return currentIndex >= this.mazeWidth;
         }
 
+        /// <summary>
+        /// Updates the index, based on the latest walk direction.
+        /// </summary>
+        /// <param name="direction">The walk direction.</param>
+        /// <param name="currentIndex">The current index that needs updating.</param>
+        /// <returns>The updated index.</returns>
         private int UpdateIndex(Direction direction, int currentIndex)
         {
             switch (direction)
