@@ -11,6 +11,7 @@
     </Window.DataContext>
     <Window.Resources>
         <local:CoordinateConverter x:Key="coordinateConverter"/>
+        <local:MazePathRectangleConverter x:Key="mazePathConverter"/>
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -18,7 +19,7 @@
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
 
-        <Canvas Height="380" Width="500">
+        <Canvas Height="440" Width="700">
             <ItemsControl ItemsSource="{Binding MazeCells}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
@@ -33,12 +34,19 @@
                 </ItemsControl.ItemContainerStyle>
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <local:DrawableMazeCell Width="5" Height="5"/>
+                        <Rectangle Fill="Green" Height="{Binding Cell, Converter={StaticResource mazePathConverter}, ConverterParameter=height}" Width="{Binding Cell, Converter={StaticResource mazePathConverter}, ConverterParameter=width}"/>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
         </Canvas>
-        
-        <Button Content="Generate" Grid.Row="1" Command="{Binding GenerateMazeCommand}"/>
+
+        <StackPanel Grid.Row="1">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <TextBox Text="{Binding GeneratedMazeWidth}" Width="50" ToolTip="Generated maze width" />
+                <TextBlock Text="x"/>
+                <TextBox Text="{Binding GeneratedMazeHeight}" Width="50" ToolTip="Generated maze height"/>
+            </StackPanel>
+            <Button Content="Generate" Grid.Row="1" Command="{Binding GenerateMazeCommand}"/>
+        </StackPanel>
     </Grid>
 </Window>

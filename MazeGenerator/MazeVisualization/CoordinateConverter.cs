@@ -15,7 +15,7 @@ namespace MazeVisualization
             if (!isValid)
                 throw new ArgumentException(nameof(value), "Value must be an an integer.");
 
-            return converted * 5;
+            return converted * 7;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
