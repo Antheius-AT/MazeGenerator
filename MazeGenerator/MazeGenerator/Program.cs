@@ -17,8 +17,8 @@ namespace MazeGenerator
             Console.SetBufferSize(Console.WindowWidth, Console.WindowHeight);
 
             // Set maze parameters.
-            int width = 60;
-            int height = 20;
+            int width = 10;
+            int height = 10;
 
             var renderer = new Renderer();
             var generator = new DefaultMazeGenerator();

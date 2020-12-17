@@ -33,6 +33,12 @@ namespace MazeGenerator
         /// <returns>The generated maze.</returns>
         public Maze Generate(int width, int height)
         {
+            if (width < 0)
+                throw new ArgumentOutOfRangeException(nameof(width), "Width must not be negative.");
+
+            if (height < 0)
+                throw new ArgumentOutOfRangeException(nameof(height), "height must not be negative.");
+
             this.mazeCells = new MazeCell[width * height];
             this.mazeWidth = width;
             this.mazeHeight = height;
